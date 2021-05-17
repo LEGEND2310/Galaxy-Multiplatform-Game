@@ -9,8 +9,8 @@ class MainWidget(Widget):
     perspective_point_x = NumericProperty(0)
     perspective_point_y = NumericProperty(0)
 
-    V_NB_LINES = 7
-    V_LINES_SPACING = 0.1  #% of screen width 
+    V_NB_LINES = 10
+    V_LINES_SPACING = 0.2  #% of screen width 
     vertical_lines = []
     def __init__(self,**kwargs):
         super(MainWidget, self).__init__(**kwargs)
@@ -43,7 +43,7 @@ class MainWidget(Widget):
     def update_vertical_lines(self):
         centeral_line_x = int(self.width/2)
         spacing = self.V_LINES_SPACING * self.width
-        offset = -int(self.V_NB_LINES/2)
+        offset = -int(self.V_NB_LINES/2) + 0.5
         for i in range(0, self.V_NB_LINES):
             line_X = int(centeral_line_x + offset * spacing)
 
@@ -70,6 +70,7 @@ class MainWidget(Widget):
 
         tr_x = self.perspective_point_x + diff_x * proportion_y
         return int(tr_x), int(tr_y)
+
 class GalaxyApp(App):
     pass
 
