@@ -1,6 +1,9 @@
 import random
 
 from kivy.config import Config
+from kivy.core.audio import SoundLoader
+from kivy.lang import Builder
+from kivy.uix.relativelayout import RelativeLayout
 
 Config.set('graphics', 'width', '900')
 Config.set('graphics', 'height', '400')
@@ -10,10 +13,10 @@ from kivy.core.window import Window
 from kivy.app import App
 from kivy.graphics.context_instructions import Color
 from kivy.graphics.vertex_instructions import Line, Quad, Triangle
-from kivy.uix.relativelayout import RelativeLayout
-from kivy.properties import NumericProperty, Clock
+from kivy.properties import NumericProperty, Clock, ObjectProperty, StringProperty
 from kivy.uix.widget import Widget
 
+Builder.load_file("menu.kv")
 
 class MainWidget(RelativeLayout):
     from transforms import transform, transform_2D, transform_perspective
