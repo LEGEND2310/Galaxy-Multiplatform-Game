@@ -21,6 +21,8 @@ Builder.load_file("menu.kv")
 class MainWidget(RelativeLayout):
     from transforms import transform, transform_2D, transform_perspective
     from useractions import keyboard_closed, on_keyboard_up,on_keyboard_down, on_touch_up, on_touch_down
+
+    menu_widget = ObjectProperty()
     perspective_point_x = NumericProperty(0)
     perspective_point_y = NumericProperty(0)
 
@@ -118,8 +120,6 @@ class MainWidget(RelativeLayout):
 
         return False
 
-
-        
 
     def init_tiles(self):
         with self.canvas:
@@ -274,7 +274,8 @@ class MainWidget(RelativeLayout):
 
     def on_menu_button_pressed(self):
         print("Button")
-
+        self.state_game_has_started = True
+        self.menu_widget.opacity = 0
 class GalaxyApp(App):
     pass
 
