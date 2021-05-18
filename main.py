@@ -51,6 +51,7 @@ class MainWidget(RelativeLayout):
     ship_coordinates = [(0, 0), (0, 0), (0, 0)]
 
     state_game_over = False
+    state_game_has_started = False
 
     def __init__(self,**kwargs):
         super(MainWidget, self).__init__(**kwargs)
@@ -254,7 +255,7 @@ class MainWidget(RelativeLayout):
         self.update_tiles()
         self.update_ship()
 
-        if not self.state_game_over:
+        if not self.state_game_over and self.state_game_has_started:
             speed_y = self.speed * self.height / 100
             self.current_offset_y += speed_y * time_factor
 
@@ -270,6 +271,9 @@ class MainWidget(RelativeLayout):
         if not self.check_ship_collision() and not self.state_game_over:
             self.state_game_over = True
             print("Game Over")
+
+    def on_menu_button_pressed(self):
+        print("Button")
 
 class GalaxyApp(App):
     pass
