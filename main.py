@@ -23,6 +23,7 @@ class MainWidget(RelativeLayout):
     from useractions import keyboard_closed, on_keyboard_up,on_keyboard_down, on_touch_up, on_touch_down
 
     menu_widget = ObjectProperty()
+    score_txt = StringProperty("Score: 0")
     perspective_point_x = NumericProperty(0)
     perspective_point_y = NumericProperty(0)
 
@@ -58,6 +59,13 @@ class MainWidget(RelativeLayout):
     menu_title = StringProperty("G   A   L   A   X   Y")
     menu_button_title = StringProperty("START")
 
+    sound_begin =  None
+    sound_galaxy =  None
+    sound_gameover_impact =  None
+    sound_gameover_voice =  None
+    sound_music1 =  None
+    sound_restart =  None
+
     def __init__(self,**kwargs):
         super(MainWidget, self).__init__(**kwargs)
         # print("INIT W: " + str(self.width) + "INIT H: " + str(self.height))
@@ -74,12 +82,21 @@ class MainWidget(RelativeLayout):
 
         Clock.schedule_interval(self.update, 1/60)
 
+    def init_audio(self):
+        self.sound_begin =  SoundLoader.load("audio/begin.wav")
+        self.sound_galaxy =  SoundLoader.load("audio/galaxy.wav")
+        self.sound_gameover_impact =  SoundLoader.load("audio/gameover_impact.wav")
+        self.sound_gameover_voice =  SoundLoader.load("audio/gameover_voice.wav")
+        self.sound_music1 =  SoundLoader.load("audio/music1.wav")
+        self.sound_restart =  SoundLoader.load("audio/restart.wav")
+
     def reset_game(self):
         self.current_offset_y = 0
         self.current_y_loop = 0
         self.current_speed_x = 0
         self.current_offset_x = 0
         self.tiles_coordinates = []
+        self.score_txt = str("Score: " + str(self.current_y_loop))
         self.pre_fill_tile_coordinates()
         self.generate_tiles_coordinates()
 
@@ -276,6 +293,7 @@ class MainWidget(RelativeLayout):
             while self.current_offset_y >= spacing_y:
                 self.current_offset_y -= spacing_y
                 self.current_y_loop += 1
+                self.score_txt = str("Score: " + str(self.current_y_loop))
                 self.generate_tiles_coordinates()
 
             speed_x = self.current_speed_x * self.width / 100
