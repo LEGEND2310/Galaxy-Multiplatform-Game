@@ -2,6 +2,7 @@ from kivy.config import Config
 Config.set('graphics', 'width', '900')
 Config.set('graphics', 'height', '400')
 
+from kivy import platform
 from kivy.app import App
 from kivy.core.window import Window
 from kivy.properties import Clock
@@ -35,9 +36,11 @@ class MainWidget(Widget):
         # print("INIT W: " + str(self.width) + "INIT H: " + str(self.height))
         self.init_vertical_lines()
         self.init_horizontal_lines()
-        self._keyboard = Window.request_keyboard(self.keyboard_closed, self)
-        self._keyboard.bind(on_key_down=self.on_keyboard_down)
-        self._keyboard.bind(on_key_up=self.on_keyboard_up)
+
+        if self.is_desktop:
+            self._keyboard = Window.request_keyboard(self.keyboard_closed, self)
+            self._keyboard.bind(on_key_down=self.on_keyboard_down)
+            self._keyboard.bind(on_key_up=self.on_keyboard_up)
 
         Clock.schedule_interval(self.update, 1/60)
 
@@ -46,6 +49,11 @@ class MainWidget(Widget):
         self._keyboard.unbind(on_key_up=self._on_keyboard_up)
         self._keyboard = None
         
+    def is_desktop(self):
+        if platform in('linux','win', 'macosx'):
+            return True
+        else:
+            return False
 
     def on_parent(self, widget, parent):
         # print("On Parent W: " + str(self.width) + "On Parent H: " + str(self.height))
