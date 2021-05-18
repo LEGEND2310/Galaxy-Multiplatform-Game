@@ -1,4 +1,5 @@
 from kivy.app import App
+from kivy.properties import Clock
 from kivy.graphics import Color
 from kivy.graphics.vertex_instructions import Line
 from kivy.uix.widget import Widget
@@ -17,11 +18,18 @@ class MainWidget(Widget):
     H_LINES_SPACING = 0.1  #% of screen height 
     horizontal_lines = []
 
+    speed = 4
+    current_offset_y = 0
+
+    speed_x = 3
+    current_offset_x = 0
+
     def __init__(self,**kwargs):
         super(MainWidget, self).__init__(**kwargs)
         # print("INIT W: " + str(self.width) + "INIT H: " + str(self.height))
         self.init_vertical_lines()
         self.init_horizontal_lines()
+        Clock.schedule_interval(self.update, 1/60)
 
 
     def on_parent(self, widget, parent):
@@ -32,8 +40,9 @@ class MainWidget(Widget):
         # print("On Size W: " + str(self.width) + "On Size H: " + str(self.height))
         # self.perspective_point_x = self.width/2
         # self.perspective_point_y = self.height*0.75
-        self.update_vertical_lines()
-        self.update_horizontal_lines()
+        # self.update_vertical_lines()
+        # self.update_horizontal_lines()
+        pass
 
 
     def on_perspective_point_x(self, widget, value):
@@ -54,7 +63,7 @@ class MainWidget(Widget):
         spacing_x = self.V_LINES_SPACING * self.width
         offset = -int(self.V_NB_LINES/2) + 0.5
         for i in range(0, self.V_NB_LINES):
-            line_X = int(centeral_line_x + offset * spacing_x)
+            line_X = int(centeral_line_x + offset * spacing_x + self.current_offset_x)
 
             x1, y1 = self.transform(line_X, 0)
             x2, y2 = self.transform(line_X, self.height)
@@ -72,12 +81,12 @@ class MainWidget(Widget):
         spacing = self.V_LINES_SPACING * self.width
         offset = int(self.V_NB_LINES/2) - 0.5
 
-        xmin = centeral_line_x - offset*spacing
-        xmax = centeral_line_x + offset*spacing
+        xmin = centeral_line_x - offset*spacing + self.current_offset_x
+        xmax = centeral_line_x + offset*spacing + self.current_offset_x
         spacing_y = self.H_LINES_SPACING * self.height
 
         for i in range(0, self.H_NB_LINES):
-            line_Y = i * spacing_y
+            line_Y = i * spacing_y - self.current_offset_y
             x1, y1 = self.transform(xmin, line_Y)
             x2, y2 = self.transform(xmax, line_Y)
             self.horizontal_lines[i].points = [x1, y1, x2, y2]
@@ -103,6 +112,19 @@ class MainWidget(Widget):
         tr_y = self.perspective_point_y - factor_y * self.perspective_point_y
 
         return int(tr_x), int(tr_y)
+    
+    def update(self, dt):
+        # print("update")
+        time_factor = dt * 60
+        self.update_vertical_lines()
+        self.update_horizontal_lines()
+        self.current_offset_y += self.speed * time_factor
+        self.current_offset_x += self.speed_x * time_factor
+
+        spacing_y = self.H_LINES_SPACING * self.height
+        if self.current_offset_y >= spacing_y:
+            self.current_offset_y -= spacing_y
+
 
 class GalaxyApp(App):
     pass
