@@ -270,6 +270,7 @@ class MainWidget(RelativeLayout):
 
         if not self.check_ship_collision() and not self.state_game_over:
             self.state_game_over = True
+            self.menu_widget.opacity = 1
             print("Game Over")
 
     def on_menu_button_pressed(self):
