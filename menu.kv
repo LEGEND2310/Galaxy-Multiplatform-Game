@@ -5,10 +5,10 @@
         Rectangle:
             size: self.size
     Label:
-        text: "TITLE"
+        text: root.parent.menu_title
         pos_hint: {"center_x": 0.5, "center_y": 0.6}
     Button:
-        text: "OK"
+        text: root.parent.menu_button_title
         pos_hint: {"center_x": 0.5, "center_y": 0.5}
         size_hint: .2, .1
         on_press: root.parent.on_menu_button_pressed()
