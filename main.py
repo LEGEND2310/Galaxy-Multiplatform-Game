@@ -10,11 +10,12 @@ from kivy.core.window import Window
 from kivy.app import App
 from kivy.graphics.context_instructions import Color
 from kivy.graphics.vertex_instructions import Line, Quad, Triangle
+from kivy.uix.relativelayout import RelativeLayout
 from kivy.properties import NumericProperty, Clock
 from kivy.uix.widget import Widget
 
 
-class MainWidget(Widget):
+class MainWidget(RelativeLayout):
     from transforms import transform, transform_2D, transform_perspective
     from useractions import keyboard_closed, on_keyboard_up,on_keyboard_down, on_touch_up, on_touch_down
     perspective_point_x = NumericProperty(0)
