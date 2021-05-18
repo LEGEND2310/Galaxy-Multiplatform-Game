@@ -189,7 +189,7 @@ class MainWidget(Widget):
             self.current_y_loop += 1
             self.generate_tiles_coordinates()
 
-        # self.current_offset_x += self.current_speed_x * time_factor
+        self.current_offset_x += self.current_speed_x * time_factor
 
 
 class GalaxyApp(App):
