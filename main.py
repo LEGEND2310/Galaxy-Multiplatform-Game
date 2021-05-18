@@ -27,7 +27,7 @@ class MainWidget(Widget):
     H_LINES_SPACING = 0.1  #% of screen height 
     horizontal_lines = []
 
-    speed = 1
+    speed = 4
     current_offset_y = 0
     current_y_loop = 0
 
@@ -35,7 +35,7 @@ class MainWidget(Widget):
     current_speed_x = 0
     current_offset_x = 0
 
-    NB_TILES = 4
+    NB_TILES = 816
     tiles = []
     tiles_coordinates = []
 
@@ -69,6 +69,7 @@ class MainWidget(Widget):
 
     def generate_tiles_coordinates(self):
         last_y = 0
+        last_x = 0
 
         #clean the coordinates that are out of the screen
         for i in range(len(self.tiles_coordinates) - 1, -1, -1):
@@ -77,11 +78,29 @@ class MainWidget(Widget):
 
         if len(self.tiles_coordinates) > 0:
             last_coordinates = self.tiles_coordinates[-1]
+            last_x = last_coordinates[0]
             last_y = last_coordinates[1] + 1
 
+
         for i in range(len(self.tiles_coordinates), self.NB_TILES):
-            r = random.randint(-1,1)
-            self.tiles_coordinates.append((r, last_y))
+            r = random.randint(0,2)
+            self.tiles_coordinates.append((last_x, last_y))
+            # 0 -> straight
+            # 1 -> right
+            # 2 -> left
+            if (r == 1):
+                last_x += 1
+                self.tiles_coordinates.append((last_x, last_y))
+                last_y += 1
+                self.tiles_coordinates.append((last_x, last_y))
+
+            if (r == 2):
+                last_x -= 1
+                self.tiles_coordinates.append((last_x, last_y))
+                last_y += 1
+                self.tiles_coordinates.append((last_x, last_y))
+
+
             last_y += 1
 
 
